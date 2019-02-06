@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase : {
+    apiKey: "AIzaSyCBbDHCvuoqm9jST4wpC9Y0uSIgGhfuL7M",
+    authDomain: "amigos-d55b2.firebaseapp.com",
+    databaseURL: "https://amigos-d55b2.firebaseio.com",
+    projectId: "amigos-d55b2",
+    storageBucket: "amigos-d55b2.appspot.com",
+    messagingSenderId: "413376763741"
+  }
 };
 
 /*
