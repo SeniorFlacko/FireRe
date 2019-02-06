@@ -7,6 +7,11 @@ import { dashboardRoutes } from './dashboard/dashboard.routes';
 
 const routes: Routes = [
   {
+    path:'', 
+    redirectTo: '/dashboard',
+    pathMatch: 'full'
+  },
+  {
     path:'login', 
     component: LoginComponent
   },
@@ -18,10 +23,6 @@ const routes: Routes = [
     path:'dashboard', 
     component: DashboardComponent,
     children: dashboardRoutes
-  },
-  {
-    path:'', 
-    component: DashboardComponent
   },
   { // Para cualquier otro valor redirigir al dashboard
     path: '**',
