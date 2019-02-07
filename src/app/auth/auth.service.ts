@@ -5,6 +5,9 @@ import swal from 'sweetalert';
 import { map } from 'rxjs/operators';
 import * as firebase from 'firebase';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Store } from '@ngrx/store';
+import { AppState } from '../app.reducer';
+import { ActivarLoaderAction, DesactivarLoaderAction } from '../shared/ui.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +17,8 @@ export class AuthService {
   constructor( 
     private afAuth: AngularFireAuth, 
     private router: Router,
-    private afDB: AngularFirestore
+    private afDB: AngularFirestore,
+    private store: Store<AppState>
     ) { }
 
   initAuthListener(){
@@ -25,7 +29,7 @@ export class AuthService {
   }
 
   createUser(email, name, password){
-
+    this.store.dispatch( new ActivarLoaderAction() );
     return this.afAuth.auth
             .createUserWithEmailAndPassword(email,password)
             .then(response => {
@@ -39,16 +43,20 @@ export class AuthService {
               this.afDB.doc(`${response.user.uid}/user`)
                 .set(usuario)
                 .then(() =>{
-                  this.router.navigate(['/dashboard']);   
+                  this.router.navigate(['/dashboard']); 
+                  this.store.dispatch( new DesactivarLoaderAction() );
+  
                 })
                 .catch(e => {
                   swal('Error',e.message, 'error');
+                  this.store.dispatch( new DesactivarLoaderAction() );
                 });
                 
 
             })
             .catch(error => {
               swal('Error en el login',error.message, 'error');
+              this.store.dispatch( new DesactivarLoaderAction() );
             });
   }
 
