@@ -8,11 +8,16 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Store } from '@ngrx/store';
 import { AppState } from '../app.reducer';
 import { ActivarLoaderAction, DesactivarLoaderAction } from '../shared/ui.actions';
+import { Subscription } from 'rxjs';
+import { SetUserAction } from './auth.actions';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  private userSubscription: Subscription;
 
   constructor( 
     private afAuth: AngularFireAuth, 
@@ -23,15 +28,21 @@ export class AuthService {
 
   initAuthListener(){
 
-    this.afAuth.authState.subscribe( (user: firebase.User) => {
-      if ( user ) {
+    this.userSubscription = this.afAuth.authState.subscribe( (user: firebase.User) => {
+      if ( user ) { // Si hay usuario entonces esta loggeado
         this.afDB.doc(`${ user.uid }/user`)
           .valueChanges()
-          .subscribe(user => {
+          .subscribe( ( user:User  ) => {
+            const usuario: User = user;
+            this.store.dispatch(new SetUserAction( usuario ));
             console.log(user);
           });
       }
+      else{ // Si no hay usuario entonces no esta loggeado y nos desuscribimos a cambios
+        this.userSubscription.unsubscribe();
+      }
     });
+
   }
 
   createUser(email, name, password){
