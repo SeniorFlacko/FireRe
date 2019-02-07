@@ -3,13 +3,19 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import swal from 'sweetalert';
 import { map } from 'rxjs/operators';
+import * as firebase from 'firebase';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor( private afAuth: AngularFireAuth, private router: Router) { }
+  constructor( 
+    private afAuth: AngularFireAuth, 
+    private router: Router,
+    private afDB: AngularFirestore
+    ) { }
 
   initAuthListener(){
 
@@ -18,12 +24,28 @@ export class AuthService {
     });
   }
 
-  createUser(email, password){
+  createUser(email, name, password){
 
     return this.afAuth.auth
             .createUserWithEmailAndPassword(email,password)
             .then(response => {
-              this.router.navigate(['']);
+              
+              const usuario = {
+                nombre: name,
+                email: response.user.email,
+                uid: response.user.uid
+              }
+
+              this.afDB.doc(`${response.user.uid}/user`)
+                .set(usuario)
+                .then(() =>{
+                  this.router.navigate(['/dashboard']);   
+                })
+                .catch(e => {
+                  swal('Error',e.message, 'error');
+                });
+                
+
             })
             .catch(error => {
               swal('Error en el login',error.message, 'error');

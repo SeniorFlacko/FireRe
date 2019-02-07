@@ -19,8 +19,8 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
   }
 
-  submit({ email, password }){ // Destructuracion de parametros
-    this.authService.createUser(email,password);
+  submit({ email, name,  password }){ // Destructuracion de parametros
+    this.authService.createUser(email,name,password);
   }
 
 }

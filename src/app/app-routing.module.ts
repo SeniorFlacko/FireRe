@@ -28,7 +28,7 @@ const routes: Routes = [
   },
   { // Para cualquier otro valor redirigir al dashboard
     path: '**',
-    redirectTo: ''
+    redirectTo: '/dashboard'
   }
 ];
 
