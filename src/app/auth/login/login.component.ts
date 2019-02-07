@@ -3,6 +3,7 @@ import { AuthService } from '../auth.service';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -20,13 +21,21 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private router: Router
     ) { }
 
   ngOnInit() {
+
+    this.authService.isAuth().subscribe(response => { //Si esta loggeado redirigir a dashboard
+      if (response) {
+        this.router.navigate(['/dashboard']);
+      }
+    });
+
     this.subscription = this.store.select('ui').subscribe(ui => {
       this.cargando = ui.isLoading;
-    })
+    });
   }
 
   ngOnDestroy() {

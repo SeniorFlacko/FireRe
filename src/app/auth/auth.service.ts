@@ -30,11 +30,12 @@ export class AuthService {
 
     this.userSubscription = this.afAuth.authState.subscribe( (user: firebase.User) => {
       if ( user ) { // Si hay usuario entonces esta loggeado
-        this.afDB.doc(`${ user.uid }/user`)
+        
+        this.afDB.doc(`${ user.uid }/user`) //Iniciamos observable pendiente de cambios en documento de firestore
           .valueChanges()
           .subscribe( ( user:User  ) => {
             const usuario: User = user;
-            this.store.dispatch(new SetUserAction( usuario ));
+            this.store.dispatch(new SetUserAction( usuario )); //Cualquier cambio lo propagamos atraves del store
             console.log(user);
           });
       }
