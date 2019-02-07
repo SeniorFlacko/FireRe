@@ -22,4 +22,15 @@ export class AuthService {
               console.error(error);
             });
   }
+
+  login(email, password){
+    this.afAuth.auth
+    .signInWithEmailAndPassword(email, password)
+    .then(response => {
+      console.log(response);
+    })
+    .catch(err => {
+      console.error(err);
+    });
+  }
 }
