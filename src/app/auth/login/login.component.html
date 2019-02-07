@@ -8,7 +8,7 @@
             <div class="form-group">
               <label class="label">Usuario</label>
               <div class="input-group">
-                <input type="email" class="form-control" placeholder="Email" ngModel name='email' required #email='ngModel'>
+                <input type="email" class="form-control" placeholder="Email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" ngModel name='email' required #email='ngModel'>
                 <div class="input-group-append">
                   <span class="input-group-text">
                     <i class="fa fa-check-circle"></i>
@@ -17,7 +17,10 @@
               </div>
               <div [hidden]="email.valid || email.pristine"
                  class="alert alert-danger">
-                Email es requerido
+                <div [hidden]="!email.hasError('required')">Email es obligatorio</div>
+                <div [hidden]="!email.hasError('pattern')">Escriba correo valido:
+                    <small><b>your-email@gmail.com</b></small>
+                </div>
               </div>
             </div>
             <div class="form-group">
