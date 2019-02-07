@@ -61,6 +61,9 @@ export class AuthService {
   }
 
   login(email, password){
+    
+    this.store.dispatch( new ActivarLoaderAction() );
+    
     this.afAuth.auth
     .signInWithEmailAndPassword(email, password)
     .then(response => {
@@ -68,6 +71,9 @@ export class AuthService {
     })
     .catch(error => {
       swal('Error en el login',error.message, 'error');
+    })
+    .finally(() =>{
+      this.store.dispatch( new DesactivarLoaderAction() );
     });
   }
 
