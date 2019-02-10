@@ -42,6 +42,7 @@ export class AuthService {
           });
       }
       else{ // Si no hay usuario entonces no esta loggeado y nos desuscribimos a cambios
+        this.user = null;
         this.userSubscription.unsubscribe();
       }
     });
