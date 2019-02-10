@@ -22,6 +22,7 @@ import { StoreModule } from '@ngrx/store';
 import { appReducers } from './app.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { RegisterComponent } from './auth/register/register.component';
+import { OrdenIngresoEgresoPipe } from './ingreso-egreso/orden-ingreso-egreso.pipe';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { RegisterComponent } from './auth/register/register.component';
     DetalleComponent,
     FooterComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    OrdenIngresoEgresoPipe
   ],
   imports: [
     BrowserModule,

@@ -47,8 +47,14 @@ export class IngresoEgresoService {
       )
       .subscribe( ( items: any ) =>{
         this.store.dispatch(new setItemsAction(items));
-        console.log(items);
+        // console.log(items);
       });
+  }
+
+  borrarIngresoEgreso(id: string){
+    const user = this.authService.getUsuario();
+    return this.afDB.doc(`${user.uid}/ingresos-egresos/items/${id}`)
+      .delete();
   }
 
   unsuscribeAll$(){
