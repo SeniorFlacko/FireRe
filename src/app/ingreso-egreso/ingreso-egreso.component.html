@@ -38,8 +38,12 @@
             </div>
 
             <hr>
-            <button [disabled]='egresoIngresoForm.invalid' type="submit" class="btn btn-success mr-2">
+            <button *ngIf="!loading"  [disabled]='egresoIngresoForm.invalid' type="submit" class="btn btn-success mr-2">
               <i class="fa fa-save"></i>
+              Agregar
+            </button>
+            <button *ngIf="loading"  disabled type="submit" class="btn btn-success mr-2">
+              <i class="fa fa-sync fa-spin"></i>
               Agregar
             </button>
 
