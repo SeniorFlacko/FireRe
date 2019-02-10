@@ -18,6 +18,7 @@ import { User } from '../models/user';
 export class AuthService {
 
   private userSubscription: Subscription;
+  private user: User;
 
   constructor( 
     private afAuth: AngularFireAuth, 
@@ -36,6 +37,7 @@ export class AuthService {
           .subscribe( ( user:User  ) => {
             const usuario: User = user;
             this.store.dispatch(new SetUserAction( usuario )); //Cualquier cambio lo propagamos atraves del store
+            this.user = user;
             console.log(user);
           });
       }
@@ -111,5 +113,9 @@ export class AuthService {
         return user!=null;
       })
     )
+  }
+
+  getUsuario(){
+    return { ...this.user };
   }
 }
