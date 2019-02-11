@@ -10,10 +10,19 @@ export const initialAuthState: AuthState = {
 }
 
 export function authReducer( state = initialAuthState, action: fromAuth.Actions ): AuthState{
+    let accion;
     switch (action.type) {
+        
         case fromAuth.SET_USER:
+            accion = <fromAuth.SetUserAction> action;
             return {
-                user: action.user
+                user: accion.user
+            }
+
+        case fromAuth.UNSET_USER:
+            accion = <fromAuth.UnsetUserAction> action;
+            return {
+                user: null
             }
     
         default:
