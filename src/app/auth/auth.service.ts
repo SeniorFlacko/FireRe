@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import swal from 'sweetalert';
-import { map } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import * as firebase from 'firebase';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Store } from '@ngrx/store';
 import { AppState } from '../app.reducer';
 import { ActivarLoaderAction, DesactivarLoaderAction } from '../shared/ui.actions';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { SetUserAction, UnsetUserAction } from './auth.actions';
 import { User } from '../models/user';
 
@@ -19,6 +19,7 @@ export class AuthService {
 
   private userSubscription: Subscription;
   private user: User;
+  private unsubscribeInfoUser$: Subject<void> = new Subject();
 
   constructor( 
     private afAuth: AngularFireAuth, 
@@ -34,19 +35,31 @@ export class AuthService {
         
         this.afDB.doc(`${ user.uid }/user`) //Iniciamos observable pendiente de cambios en documento de firestore
           .valueChanges()
-          .subscribe( ( user:User  ) => {
-            const usuario: User = user;
-            this.store.dispatch(new SetUserAction( usuario )); //Cualquier cambio lo propagamos atraves del store
-            this.user = user;
-            console.log(user);
-          });
+          .pipe(takeUntil(this.unsubscribeInfoUser$))
+          .subscribe( 
+            ( user:User  ) => {
+              const usuario: User = user;
+              this.store.dispatch(new SetUserAction( usuario )); //Cualquier cambio lo propagamos atraves del store
+              this.user = user;
+              console.log(user);
+            },
+            (err) => { console.log(err); },
+            () => { console.log(`infoUser$ done`); }
+          );
       }
       else{ // Si no hay usuario entonces no esta loggeado y nos desuscribimos a cambios
         this.user = null;
-        this.userSubscription.unsubscribe();
+        // console.log('[Inside Auth$] cerrando listener InfoUser$');
+        this.unsubscribeInfoUser();
       }
     });
 
+  }
+
+  unsubscribeInfoUser(){
+    this.unsubscribeInfoUser$.next();
+    this.unsubscribeInfoUser$.complete();
+    this.store.dispatch(new UnsetUserAction());
   }
 
   createUser(email, name, password){
@@ -101,7 +114,8 @@ export class AuthService {
   logout(){
     this.afAuth.auth.signOut();
     this.router.navigate(['/login']);
-    this.store.dispatch(new UnsetUserAction);
+    // console.log('Cerrando Info User Listener');
+    this.unsubscribeInfoUser();
   }
 
   isAuth(){

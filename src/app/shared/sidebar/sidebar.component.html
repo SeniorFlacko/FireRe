@@ -25,31 +25,31 @@
       </div>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" routerLink="/dashboard" >
       <a class="nav-link">
         <i class="menu-icon fa fa-tachometer-alt"></i>
-        <span class="menu-title" routerLink="/dashboard">Dashboard</span>
+        <span class="menu-title" >Dashboard</span>
       </a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" routerLink="/dashboard/ingreso-egreso" >
       <a class="nav-link">
         <i class="menu-icon fa fa-clipboard-list"></i>
-        <span class="menu-title" routerLink="/dashboard/ingreso-egreso">Ingresos y Egresos</span>
+        <span class="menu-title">Ingresos y Egresos</span>
       </a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" routerLink="/dashboard/detalle" >
       <a class="nav-link">
         <i class="menu-icon fa fa-table"></i>
-        <span class="menu-title" routerLink="/dashboard/detalle">Detalle</span>
+        <span class="menu-title">Detalle</span>
       </a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" (click)="logout()">
       <a class="nav-link cursor">
         <i class="menu-icon fa fa-sign-out-alt"></i>
-        <span class="menu-title" (click)="logout()">Cerrar sesión</span>
+        <span class="menu-title">Cerrar sesión</span>
       </a>
     </li>
     
