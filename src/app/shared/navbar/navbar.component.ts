@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/models/user';
-import { map } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar',
@@ -17,6 +17,7 @@ export class NavbarComponent implements OnInit {
     this.user$ = this.store
     .select('auth')
     .pipe(
+      filter( auth => auth.user!=null ),
       map(auth => auth.user)
     );
   }

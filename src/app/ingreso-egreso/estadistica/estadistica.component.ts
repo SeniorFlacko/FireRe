@@ -17,6 +17,13 @@ export class EstadisticaComponent implements OnInit,OnDestroy {
   cuantosEgresos: number;
   egresos: number;
   ingresos: number;
+
+  // Doughnut
+  public doughnutChartLabels:string[] = ['Ingresos', 'Egresos'];
+  public doughnutChartData:number[] = [];
+
+
+
   constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
@@ -43,6 +50,8 @@ export class EstadisticaComponent implements OnInit,OnDestroy {
         this.egresos += item.monto;
       }
     }
+
+    this.doughnutChartData = [this.egresos, this.ingresos];
   }
 
   ngOnDestroy() {
