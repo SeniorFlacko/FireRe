@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.authService.isAuth().subscribe(response => { //Si esta loggeado redirigir a dashboard
       if (response) {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['']);
       }
     });
 

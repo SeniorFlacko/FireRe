@@ -8,11 +8,6 @@ import { RegisterComponent } from './auth/register/register.component';
 
 const routes: Routes = [
   {
-    path:'', 
-    redirectTo: '/dashboard',
-    pathMatch: 'full'
-  },
-  {
     path:'login', 
     component: LoginComponent
   },
@@ -21,14 +16,14 @@ const routes: Routes = [
     component: RegisterComponent
   },
   {
-    path:'dashboard', 
+    path:'', 
     component: DashboardComponent,
-    children: dashboardRoutes,
+    loadChildren: './ingreso-egreso/ingreso-egreso.module#IngresoEgresoModule',
     canActivate: [AuthGuard]
   },
   { // Para cualquier otro valor redirigir al dashboard
     path: '**',
-    redirectTo: '/dashboard'
+    redirectTo: '',
   }
 ];
 

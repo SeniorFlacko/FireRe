@@ -101,7 +101,7 @@ export class AuthService {
     this.afAuth.auth
     .signInWithEmailAndPassword(email, password)
     .then(response => {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['']);
     })
     .catch(error => {
       swal('Error en el login',error.message, 'error');
